@@ -22,6 +22,11 @@ public class TelaTabela extends javax.swing.JFrame {
         seguidores = new ArrayList<Seguidor>();
     }
 
+    public ArrayList<Seguidor> getSeguidores() {
+        return seguidores;
+    }
+    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -125,7 +130,12 @@ public class TelaTabela extends javax.swing.JFrame {
 
     private void btAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarActionPerformed
         // TODO add your handling code here:
-        
+        if(!seguidores.isEmpty()){
+            System.out.print(seguidores.get(0).getApelido());
+        }
+        TelaAddSeguidor telaAdd = new TelaAddSeguidor(this);
+        telaAdd.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btAdicionarActionPerformed
 
 

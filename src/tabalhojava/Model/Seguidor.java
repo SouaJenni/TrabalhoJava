@@ -4,6 +4,9 @@
  */
 package tabalhojava.Model;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -44,7 +47,9 @@ public class Seguidor {
         return nascimento;
     }
 
-    public void setNascimento(Date nascimento) {
+    public void setNascimento(String data) throws Exception{
+        LocalDateTime dataNasc = converterStringParaLocalDate(data);
+        Date nascimento = converterLocalDateParaDate(dataNasc);
         this.nascimento = nascimento;
     }
 
@@ -60,8 +65,10 @@ public class Seguidor {
         return dataInscricao;
     }
 
-    public void setDataInscricao(Date dataInscricao) {
-        this.dataInscricao = dataInscricao;
+    public void setDataInscricao(String data) throws Exception {
+        LocalDateTime dataInsc = converterStringParaLocalDate(data);
+        Date inscricao = converterLocalDateParaDate(dataInsc);
+        this.dataInscricao = inscricao;
     }
 
     public int getBits() {
@@ -87,4 +94,39 @@ public class Seguidor {
         
         return matcher.matches();
     }
+    
+     public int calcularIdade(String nascimento)throws Exception{
+            LocalDateTime dataNascimento = converterStringParaLocalDate(nascimento);
+            
+            LocalDateTime hoje = LocalDateTime.now();
+
+            long idade = dataNascimento.until(hoje, ChronoUnit.YEARS);
+            
+            return (int) idade;
+        }
+    
+        public LocalDateTime converterStringParaLocalDate(String data)throws Exception{
+            String DATE_REGEX = "^\\d{2}/\\d{2}/\\d{4}$";
+            Pattern pattern = Pattern.compile(DATE_REGEX);
+            Matcher matcher = pattern.matcher(data);
+            if (!matcher.matches()) {
+                throw new Exception("Formato de data inválido! Utilize DD/MM/AAAA");
+            }
+            try{
+                int dia = Integer.parseInt(data.substring(0,2));
+                int mes = Integer.parseInt(data.substring(3,5));
+                int ano = Integer.parseInt(data.substring(6,10));
+                LocalDateTime dataNascimento = LocalDateTime.of(ano, mes, dia, 0, 0, 0);
+                
+                return dataNascimento;
+            }catch(Exception e){
+                throw new Exception("Data inválida! O dia, mês e ano devem existir");
+            }
+        }
+        
+        public Date converterLocalDateParaDate(LocalDateTime data){
+            Date nascimento = Date.from(data.atZone(ZoneId.systemDefault()).toInstant());
+            
+            return nascimento;
+        } 
 }
