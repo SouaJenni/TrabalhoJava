@@ -5,6 +5,9 @@
 package tabalhojava.View;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import tabalhojava.Controller.Utils;
 import tabalhojava.Model.Seguidor;
 
 /**
@@ -17,15 +20,48 @@ public class TelaTabela extends javax.swing.JFrame {
      * Creates new form TelaTabela
      */
     private ArrayList<Seguidor> seguidores;
+    private Utils utils = new Utils();
+    private DefaultTableModel modelo;
     public TelaTabela() {
         initComponents();
-        seguidores = new ArrayList<Seguidor>();
+        this.seguidores = new ArrayList<Seguidor>();
+        this.utils.inicializarSeguidores(this.seguidores);
+        this.modelo = (DefaultTableModel) this.jTable1.getModel();
+        popularTabela();
     }
 
     public ArrayList<Seguidor> getSeguidores() {
-        return seguidores;
+        return this.seguidores;
     }
     
+    public void addSeguidor(Seguidor seguidor){
+        String nome = seguidor.getNome();
+        String sexo = seguidor.getSexo();
+        int idade = seguidor.getIdade();
+        String usuario = seguidor.getApelido();
+        String dataDeInscricao = seguidor.dataToString(seguidor.getDataInscricao());
+        int bits = seguidor.getBits();
+        boolean isSub = seguidor.isIsSub();
+
+        this.modelo.addRow(new Object[]{nome, sexo, idade, usuario, dataDeInscricao, bits, isSub});      
+    }
+    
+    public void popularTabela(){
+        int i =  0;
+        for(Seguidor seguidor: seguidores){
+            String nome = seguidor.getNome();
+            String sexo = seguidor.getSexo();
+            int idade = seguidor.getIdade();
+            String usuario = seguidor.getApelido();
+            String dataDeInscricao = seguidor.dataToString(seguidor.getDataInscricao());
+            int bits = seguidor.getBits();
+            boolean isSub = seguidor.isIsSub();
+            
+            this.modelo.insertRow(i, new Object[]{nome, sexo, idade, usuario, dataDeInscricao, bits, isSub});
+            
+            i++;
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -55,6 +91,11 @@ public class TelaTabela extends javax.swing.JFrame {
         btEditar.setText("Editar");
 
         btExcluir.setText("Excluir");
+        btExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btExcluirActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -137,6 +178,45 @@ public class TelaTabela extends javax.swing.JFrame {
         telaAdd.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btAdicionarActionPerformed
+
+    private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
+        // TODO add your handling code here:
+        Object[] opcoes = {"Sim", "Não"};
+        
+        int resposta = JOptionPane.showConfirmDialog(
+                null, 
+                "Quer mesmo deletar essa pessoa?", 
+                "Excluir usuário",
+                JOptionPane.YES_NO_OPTION
+        );
+        
+        if(resposta == 1){
+            return;
+        }
+        
+        int linhaSelecionada = this.jTable1.getSelectedRow();
+        if(linhaSelecionada == -1){
+            utils.mostrarErro("Nenhum seguidor selecionado");
+            
+            return;
+        }
+        
+        String apelido = this.jTable1.getModel().getValueAt(linhaSelecionada, 3).toString();
+        int i;
+        for(i =0; i<this.seguidores.size(); i++){
+            Seguidor seguidor = this.seguidores.get(i);
+            if(seguidor.getApelido().equals(apelido)){
+                break;
+            }
+        }
+        if(i==this.seguidores.size()){
+            this.utils.mostrarErro("O usuário selecionado não existe.");
+            
+            return;
+        }
+        this.seguidores.remove(i);
+        this.modelo.removeRow(linhaSelecionada);
+    }//GEN-LAST:event_btExcluirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -4,10 +4,15 @@
  */
 package tabalhojava.Model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,6 +57,23 @@ public class Seguidor {
         Date nascimento = converterLocalDateParaDate(dataNasc);
         this.nascimento = nascimento;
     }
+    
+    public String dataToString(Date data){
+        String pattern = "dd/MM/yyyy";
+        DateFormat dateFormat = new SimpleDateFormat(pattern);
+        
+        return dateFormat.format(data);
+    }
+    
+    public int getIdade() {
+        String nascimento = dataToString(this.nascimento);
+        
+        try {
+            return calcularIdade(nascimento);
+        } catch (Exception ex) {
+            return -1;
+        }
+    }
 
     public String getApelido() {
         return apelido;
@@ -88,7 +110,12 @@ public class Seguidor {
     }
     
     private static final String APELIDO_REGEX = "^[A-Za-z]{2,}+[A-Za-z0-9+@-]*$";
-    public boolean validarApelido(String apelido){
+    public boolean validarApelido(String apelido, ArrayList<Seguidor> seguidores){
+        for(Seguidor seguidor : seguidores){
+            if(seguidor.getApelido().equals(apelido)){
+                return false;
+            }
+        }
         Pattern pattern = Pattern.compile(APELIDO_REGEX);
         Matcher matcher = pattern.matcher(apelido);
         

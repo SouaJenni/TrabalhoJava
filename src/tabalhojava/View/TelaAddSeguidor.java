@@ -234,7 +234,7 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
                 this.utils.mostrarErro("Nome inválido!");
             }
             this.seguidor.setNome(this.txtNome.getText());
-            boolean isValido = this.seguidor.validarApelido(this.txtUsuario.getText());
+            boolean isValido = this.seguidor.validarApelido(this.txtUsuario.getText(), this.telaTabela.getSeguidores());
             if(!isValido){
                     this.utils.mostrarErro("Usuáio inválido");
             }
@@ -260,6 +260,7 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
             
             this.telaTabela.getSeguidores().add(this.seguidor);
             this.telaTabela.setVisible(true);
+            this.telaTabela.addSeguidor(this.seguidor);
             this.dispose();
         }catch(Exception e){
             this.utils.mostrarErro(e.getMessage());
