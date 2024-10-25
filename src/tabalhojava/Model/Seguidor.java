@@ -88,6 +88,9 @@ public class Seguidor {
     }
 
     public void setDataInscricao(String data) throws Exception {
+        if(data.equals("")){
+            data = "28/02/2050";
+        }
         LocalDateTime dataInsc = converterStringParaLocalDate(data);
         Date inscricao = converterLocalDateParaDate(dataInsc);
         this.dataInscricao = inscricao;
@@ -116,6 +119,10 @@ public class Seguidor {
                 return false;
             }
         }
+        return true;
+    }
+    
+    public boolean validarApelido(String apelido){
         Pattern pattern = Pattern.compile(APELIDO_REGEX);
         Matcher matcher = pattern.matcher(apelido);
         

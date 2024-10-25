@@ -19,17 +19,51 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
     private TelaTabela telaTabela;
     private Utils utils = new Utils();
     private Seguidor seguidor = new Seguidor();
+    private boolean isEditando = false;
+    private int index = -1;
+    private int linhaTabela = -1;
     /**
      * Creates new form TelaAddSeguidor
      */
-    public TelaAddSeguidor(TelaTabela tabela) {
+    public TelaAddSeguidor(TelaTabela telaTabela) {
+        inicializar(telaTabela);
+    }
+    
+    private void inicializar(TelaTabela telaTabela){
         initComponents();
-        this.telaTabela = tabela;
+        this.telaTabela = telaTabela;
         this.buttonGroup1.add(this.btFem);
         this.buttonGroup1.add(this.btMas);
         this.buttonGroup1.add(this.btNb);
     }
-
+    public TelaAddSeguidor(int index, int linhaTabela, TelaTabela telaTabela){
+        inicializar(telaTabela);
+        this.index = index;
+        this.isEditando = true;
+        this.linhaTabela = linhaTabela;
+        carregarSeguidor();
+    }
+    
+    private void carregarSeguidor(){
+        Seguidor seguidor = this.telaTabela.getSeguidores().get(this.index);
+        this.txtNome.setText(seguidor.getNome());
+        this.txtUsuario.setText(seguidor.getApelido());
+        this.txtNascimento.setText(seguidor.dataToString(seguidor.getNascimento()));
+        this.txtInsc.setText(seguidor.dataToString(seguidor.getDataInscricao()));
+        this.txtIdade.setText(seguidor.getIdade()+"");
+        this.bitsSpinner.setValue(seguidor.getBits());
+        this.inscritoCheckBox.setSelected(seguidor.isIsSub());
+        switch(seguidor.getSexo()){
+            case "F": 
+                this.btFem.setSelected(true);
+                break;
+            case "M":
+                 this.btMas.setSelected(true);
+                 break;
+            default:
+                this.btNb.setSelected(true);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -61,6 +95,7 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
         btMas = new javax.swing.JRadioButton();
         btNb = new javax.swing.JRadioButton();
         btSalvar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -118,6 +153,13 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Cancelar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -129,12 +171,6 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
                     .addComponent(txtUsuario)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btFem)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btMas)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btNb))
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -160,13 +196,21 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
                                     .addComponent(txtInsc, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel8))
+                            .addComponent(jLabel8)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btFem)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(btSalvar)
+                                        .addGap(90, 90, 90)
+                                        .addComponent(jButton1))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(btMas)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btNb)))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(163, 163, 163)
-                .addComponent(btSalvar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,7 +249,9 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
                     .addComponent(btMas)
                     .addComponent(btNb))
                 .addGap(18, 18, 18)
-                .addComponent(btSalvar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btSalvar)
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -234,19 +280,24 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
                 this.utils.mostrarErro("Nome inválido!");
             }
             this.seguidor.setNome(this.txtNome.getText());
-            boolean isValido = this.seguidor.validarApelido(this.txtUsuario.getText(), this.telaTabela.getSeguidores());
+            boolean isValido = this.seguidor.validarApelido(this.txtUsuario.getText());
+
             if(!isValido){
-                    this.utils.mostrarErro("Usuáio inválido");
+                this.utils.mostrarErro("Usuáio inválido");
+                return;
             }
+            boolean isUnico = this.seguidor.validarApelido(this.txtUsuario.getText(), this.telaTabela.getSeguidores());
+            if(!this.isEditando && !isUnico){
+                this.utils.mostrarErro("Usuáio já existe");
+                return;
+            }
+      
             this.seguidor.setApelido(this.txtUsuario.getText());
             this.seguidor.setNascimento(txtNascimento.getText());
 
             boolean isSub = this.inscritoCheckBox.isSelected();
             this.seguidor.setIsSub(isSub);
-            if(isSub){
-                this.seguidor.setDataInscricao(this.txtInsc.getText());
-            }
-            
+            this.seguidor.setDataInscricao(this.txtInsc.getText());
             int bits = (Integer) this.bitsSpinner.getValue();
             this.seguidor.setBits(bits);
             
@@ -257,10 +308,15 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
             } else{
                 this.seguidor.setSexo("NB");
             }
+            if(this.isEditando){
+                this.telaTabela.getSeguidores().set(index, seguidor);
+                this.telaTabela.editarSeguidor(this.seguidor, linhaTabela);
+            }else{
+                this.telaTabela.getSeguidores().add(this.seguidor);
+                this.telaTabela.addSeguidor(this.seguidor);
+            }  
             
-            this.telaTabela.getSeguidores().add(this.seguidor);
             this.telaTabela.setVisible(true);
-            this.telaTabela.addSeguidor(this.seguidor);
             this.dispose();
         }catch(Exception e){
             this.utils.mostrarErro(e.getMessage());
@@ -277,6 +333,12 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtNascimentoActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.telaTabela.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -290,6 +352,7 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
     private javax.swing.JButton btSalvar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox inscritoCheckBox;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

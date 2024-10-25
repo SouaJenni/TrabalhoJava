@@ -46,6 +46,24 @@ public class TelaTabela extends javax.swing.JFrame {
         this.modelo.addRow(new Object[]{nome, sexo, idade, usuario, dataDeInscricao, bits, isSub});      
     }
     
+    public void editarSeguidor(Seguidor seguidor, int index){
+        String nome = seguidor.getNome();
+        this.modelo.setValueAt(nome, index, 0);
+        String sexo = seguidor.getSexo();
+        this.modelo.setValueAt(sexo, index, 1);
+        int idade = seguidor.getIdade();
+        this.modelo.setValueAt(idade, index, 2);
+        String usuario = seguidor.getApelido();
+        this.modelo.setValueAt(usuario, index, 3);
+        String dataDeInscricao = seguidor.dataToString(seguidor.getDataInscricao());
+        this.modelo.setValueAt(dataDeInscricao, index, 4);
+        int bits = seguidor.getBits();
+        this.modelo.setValueAt(bits, index, 5);
+        boolean isSub = seguidor.isIsSub();
+        this.modelo.setValueAt(isSub, index, 6);     
+    }
+    
+    
     public void popularTabela(){
         int i =  0;
         for(Seguidor seguidor: seguidores){
@@ -89,6 +107,11 @@ public class TelaTabela extends javax.swing.JFrame {
         });
 
         btEditar.setText("Editar");
+        btEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btEditarActionPerformed(evt);
+            }
+        });
 
         btExcluir.setText("Excluir");
         btExcluir.addActionListener(new java.awt.event.ActionListener() {
@@ -181,7 +204,6 @@ public class TelaTabela extends javax.swing.JFrame {
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
         // TODO add your handling code here:
-        Object[] opcoes = {"Sim", "Não"};
         
         int resposta = JOptionPane.showConfirmDialog(
                 null, 
@@ -217,6 +239,33 @@ public class TelaTabela extends javax.swing.JFrame {
         this.seguidores.remove(i);
         this.modelo.removeRow(linhaSelecionada);
     }//GEN-LAST:event_btExcluirActionPerformed
+
+    private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = this.jTable1.getSelectedRow();
+        if(linhaSelecionada == -1){
+            utils.mostrarErro("Nenhum seguidor selecionado");
+            
+            return;
+        }
+        
+        String apelido = this.jTable1.getModel().getValueAt(linhaSelecionada, 3).toString();
+        int i;
+        for(i =0; i<this.seguidores.size(); i++){
+            Seguidor seguidor = this.seguidores.get(i);
+            if(seguidor.getApelido().equals(apelido)){
+                break;
+            }
+        }
+        if(i==this.seguidores.size()){
+            this.utils.mostrarErro("O usuário selecionado não existe.");
+            
+            return;
+        }
+        TelaAddSeguidor addSeguidor = new TelaAddSeguidor(i, linhaSelecionada, this);
+        addSeguidor.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btEditarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
