@@ -95,7 +95,7 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
         btMas = new javax.swing.JRadioButton();
         btNb = new javax.swing.JRadioButton();
         btSalvar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btCancelar = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -153,10 +153,10 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Cancelar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btCancelar.setText("Cancelar");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btCancelarActionPerformed(evt);
             }
         });
 
@@ -204,7 +204,7 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(btSalvar)
                                         .addGap(90, 90, 90)
-                                        .addComponent(jButton1))
+                                        .addComponent(btCancelar))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(btMas)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -251,7 +251,7 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btSalvar)
-                    .addComponent(jButton1))
+                    .addComponent(btCancelar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -333,11 +333,11 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtNascimentoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
         // TODO add your handling code here:
         this.telaTabela.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -346,13 +346,13 @@ public class TelaAddSeguidor extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSpinner bitsSpinner;
+    private javax.swing.JButton btCancelar;
     private javax.swing.JRadioButton btFem;
     private javax.swing.JRadioButton btMas;
     private javax.swing.JRadioButton btNb;
     private javax.swing.JButton btSalvar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox inscritoCheckBox;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

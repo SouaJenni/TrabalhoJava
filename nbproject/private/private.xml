@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Daniel%20Dória/Documents/NetBeansProjects/TrabalhoJava/src/tabalhojava/Controller/Utils.java</file>
-            <file>file:/C:/Users/Daniel%20Dória/Documents/NetBeansProjects/TrabalhoJava/src/tabalhojava/Model/Usuario.java</file>
-            <file>file:/C:/Users/Daniel%20Dória/Documents/NetBeansProjects/TrabalhoJava/src/tabalhojava/Model/Seguidor.java</file>
-            <file>file:/C:/Users/Daniel%20Dória/Documents/NetBeansProjects/TrabalhoJava/src/tabalhojava/View/TelaTabela.java</file>
-            <file>file:/C:/Users/Daniel%20Dória/Documents/NetBeansProjects/TrabalhoJava/src/tabalhojava/View/TelaAddSeguidor.java</file>
+            <file>file:/C:/Users/Jenni/Documents/TrabalhoJava/src/tabalhojava/View/TelaRegistro.java</file>
+            <file>file:/C:/Users/Jenni/Documents/TrabalhoJava/src/tabalhojava/View/TelaAddSeguidor.java</file>
+            <file>file:/C:/Users/Jenni/Documents/TrabalhoJava/src/tabalhojava/View/TelaTabela.java</file>
+            <file>file:/C:/Users/Jenni/Documents/TrabalhoJava/src/tabalhojava/View/TelaLogin.java</file>
         </group>
     </open-files>
 </project-private>
